@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% set active = "author" %}
+{% block content %}
+    <section class="py-5 mt-4">
+        <div class="container overflow-hidden bsb-author-1">
+            <div class="row justify-content-center gy-4 gy-md-0">
+                <div class="col-12 col-md-3 col-xl-2 d-flex align-items-center justify-content-center">
+                    <img class="img-fluid rounded-circle author-avatar" loading="lazy"
+                         src="{{ url_for('static', filename='images/author.jpg') }}" alt="Kacper Przełożny">
+                </div>
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5 d-flex align-items-center justify-content-center">
+                    <div class="text-center text-md-start author-content">
+                        <h5 class="text-secondary fs-7">Application created by</h5>
+                        <h2 class="fs-2 mb-3">Kacper Przełożny</h2>
+                        <p class="mb-3">I am student of Applied Computer Science at Krakow University of Economics. This
+                            project was created for subject Programming Workshop</p>
+                        <p class="mb-0">
+                            <a href="https://github.com/kacperPrzelozny" class="link-dark text-decoration-none">
+                                View More Projects
+                                <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="arrow">
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

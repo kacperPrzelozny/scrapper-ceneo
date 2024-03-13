@@ -1,9 +1,171 @@
 {% extends 'index.html' %}
-
+{% set active = "home" %}
 {% block content %}
-    <div class="container">
-        <h1>Welcome to My Website</h1>
-        <p class="lead">This is a Bootstrap-styled page.</p>
-        <button class="btn btn-primary">Click me</button>
-    </div>
+    <main class="p-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 my-2">
+                <h2>Goal of application</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="accordion accordion-flush col-md-8" id="purposes">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                            Quickly check opinions about products
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                         data-bs-parent="#purposes">
+                        <div class="accordion-body">
+                            You can very quickly check opinions about the product you are interested in, all you need is
+                            ID of product from <a style="color: #FF6400 !important;"
+                                                  class="fw-bold text-decoration-none pointer-event"
+                                                  href="https://ceneo.pl" target="_blank">ceneo.pl</a> and this
+                            application will show you information you need.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                aria-controls="flush-collapseTwo">
+                            Easy way of comparing products
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                         data-bs-parent="#purposes">
+                        <div class="accordion-body">
+                            By <a style="color: #FF6400 !important;" class="fw-bold text-decoration-none pointer-event"
+                                  href="/products">product list</a> module you can easily filter and order your products
+                            by properties that are important for you!
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingThree">
+                        <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree">
+                            Saving products for later
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                         aria-labelledby="flush-headingThree" data-bs-parent="#purposes">
+                        <div class="accordion-body">
+                            You can mark product as liked one, so it helps you to choose the best one!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-fled justify-content-center mt-3">
+            <div class="col-md-8 my-2">
+                <h2>Functionalities</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4 my-2">
+                <div class="card h-100">
+                    <div class="card-body px-4">
+                        <h5 class="card-title">Extracting opinions</h5>
+                        <p class="card-text">You can extract opinions from <a style="color: #FF6400 !important;"
+                                                                              class="fw-bold text-decoration-none pointer-event"
+                                                                              href="https://ceneo.pl" target="_blank">ceneo.pl</a>
+                            on any product by providing its ID from URL</p>
+                        <a href="/extractOpinions" class="btn btn-dark float-end">Try it!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 my-2">
+                <div class="card h-100">
+                    <div class="card-body px-4">
+                        <h5 class="card-title">Saved products</h5>
+                        <p class="card-text">You can see list of saved products with attached opinions</p>
+                        <a href="/products" class="btn btn-dark float-end">See my products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-8 my-2">
+                <h2>Tools</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="card-group col-md-8">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/python-logo.webp') }}" class="card-img-top p-4"
+                         style="width:100%; aspect-ratio: 1/1"
+                         alt="python">
+                    <div class="card-body">
+                        <h5 class="card-title">Python</h5>
+                        <p class="card-text">Programming language</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/flask-logo.webp') }}" class="card-img-top"
+                         style="width:100%; aspect-ratio: 1/1"
+                         alt="flask">
+                    <div class="card-body">
+                        <h5 class="card-title">Flask</h5>
+                        <p class="card-text">Microframework</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/beautiful-soup-logo.png') }}" class="card-img-top"
+                         style="object-fit: cover; width: 100%; aspect-ratio: 1/1"
+                         alt="...">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title">Beautiful Soup</h5>
+                        <p class="card-text">Web scrapper</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/bootstrap-logo.svg') }}" class="card-img-top p-4"
+                         style="width:100%; aspect-ratio: 1/1"
+                         alt="python">
+                    <div class="card-body">
+                        <h5 class="card-title">Bootstrap</h5>
+                        <p class="card-text">CSS Framework</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-8 my-2">
+                <h2>Approaches</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="card col-md-8">
+                <div class="card-header fs-5">
+                    Design patter
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0 fs-6">
+                        <p><b>MVC</b> - <b>M</b>odel <b>V</b>iew <b>C</b>ontroller is a software design pattern commonly
+                            used for developing user interfaces that divides the related program logic into three
+                            interconnected elements. </p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2 mb-3">
+            <div class="card col-md-8">
+                <div class="card-header fs-5 w-100">
+                    Version control system
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0 fs-6">
+                        <p>I used Git version control system with GitHub repository and managed it by creating separate
+                            branch for each functionality, so I had full control about my project.</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

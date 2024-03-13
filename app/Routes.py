@@ -13,7 +13,7 @@ class Routes:
         Routes.registerRoute(app, '/author', HomeController.author)
 
         # Opinions controller routes
-        Routes.registerRoute(app, '/opinions', OpinionsController.indexOpinions)
+        Routes.registerRoute(app, '/extractOpinions', OpinionsController.indexOpinions)
         Routes.registerRoute(app, '/opinions/<string:productId>', OpinionsController.viewOpinions)
 
         # Products controller routes

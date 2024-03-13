@@ -8,4 +8,4 @@ class HomeController:
 
     @staticmethod
     def author():
-        return "Author page"
+        return render_template('home/author.html')
