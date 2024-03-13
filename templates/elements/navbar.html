@@ -4,7 +4,7 @@
           <a class="nav-link {{ 'active' if active == 'home' else '' }}" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item px-3 text-center">
-          <a class="nav-link {{ 'active' if active == 'opinions' else '' }}" href="/opinions">Extract opinions</a>
+          <a class="nav-link {{ 'active' if active == 'opinions' else '' }}" href="/extractOpinions">Extract opinions</a>
         </li>
         <li class="nav-item px-3 text-center">
           <a class="nav-link {{ 'active' if active == 'products' else '' }}" href="/products">Product list</a>
@@ -14,7 +14,7 @@
         </li>
     </ul>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
         <img src="{{ url_for('static', filename='images/logo-ceneo.svg') }}" alt="logo" width="75px" style="margin-bottom: 5px">
@@ -29,7 +29,7 @@
           <a class="nav-link {{ 'active' if active == 'home' else '' }}" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ 'active' if active == 'opinions' else '' }}" href="/opinions">Extract opinions</a>
+          <a class="nav-link {{ 'active' if active == 'opinions' else '' }}" href="/extractOpinions">Extract opinions</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active == 'products' else '' }}" href="/products">Product list</a>
