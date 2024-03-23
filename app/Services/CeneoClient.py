@@ -2,7 +2,7 @@ from urllib.request import urlopen
 
 
 class CeneoClient:
-    url = 'https://www.ceneo.pl/'
+    url = 'https://www.ceneo.pl'
 
     def request(self, productId):
         req = urlopen(CeneoClient.url + productId)

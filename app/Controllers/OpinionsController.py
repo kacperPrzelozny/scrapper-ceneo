@@ -1,5 +1,4 @@
-
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 
 from app.Model.Product import Product
 from app.Services.CeneoScrapperService import CeneoScrapperService
@@ -18,11 +17,9 @@ class OpinionsController:
         product = Product.findById([productId])
 
         if product is None:
-            product = ceneoScrapper.getProduct()
+            ceneoScrapper.getProduct()
 
-
-
-        return render_template('opinions/index.html')
+        return redirect('/products/' + productId)
 
     @staticmethod
     def viewOpinions(productId):
