@@ -1,7 +1,38 @@
 {% extends 'index.html' %}
 {% set active = "opinions" %}
 {% block content %}
-    <div class="container">
-        <h1>Opinions page</h1>
-    </div>
+    <main class="p-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 my-2 d-flex justify-content-center">
+                <h2>Extract opinions</h2>
+            </div>
+        </div>
+        <form method="POST" action="/extractOpinions">
+            <div class="row justify-content-center">
+                <div class="mb-3 col-md-8 d-flex justify-content-center">
+                    <div class="col-md-6">
+                        <label for="productId" class="form-label">Ceneo product ID</label>
+                        <input type="text" class="form-control" id="productId"
+                               name="productId" value="{{ request.form['productId'] }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="mb-3 col-md-8 d-flex justify-content-center">
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" type="submit">Process</button>
+                    </div>
+                </div>
+            </div>
+            {% if error %}
+                <div class="row justify-content-center">
+                    <div class="mb-3 col-md-8 d-flex justify-content-center">
+                        <div class="col-md-6 alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </main>
 {% endblock %}
