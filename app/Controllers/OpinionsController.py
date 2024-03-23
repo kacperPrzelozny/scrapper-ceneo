@@ -7,7 +7,7 @@ from app.Services.CeneoScrapperService import CeneoScrapperService
 class OpinionsController:
     @staticmethod
     def indexOpinions():
-        return render_template('opinions/index.html')
+        return render_template('opinions/index.html', error=False)
 
     @staticmethod
     def getOpinions():
@@ -16,10 +16,14 @@ class OpinionsController:
         ceneoScrapper = CeneoScrapperService(productId)
         product = Product.findById([productId])
 
+        error = None
         if product is None:
-            ceneoScrapper.getProduct()
+            error = ceneoScrapper.getProduct()
 
-        return redirect('/products/' + productId)
+        if error is None:
+            return redirect('/products/' + productId)
+
+        return render_template('opinions/index.html', error=True, message=error["message"])
 
     @staticmethod
     def viewOpinions(productId):

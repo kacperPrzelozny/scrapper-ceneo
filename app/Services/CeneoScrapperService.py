@@ -1,3 +1,4 @@
+from app.Model.Feature import Feature
 from app.Model.Opinion import Opinion
 from app.Model.Product import Product
 from app.Services.CeneoClient import CeneoClient
@@ -13,7 +14,7 @@ class CeneoScrapperService:
         response = self.client.request(f"/{self.productId}")
 
         if response["status"] != "success":
-            return {"status": "error"}
+            return {"status": "error", "message": response["message"]}
 
         soup = BeautifulSoup(response["page"], 'html.parser')
         name = self.getName(soup)
@@ -28,7 +29,7 @@ class CeneoScrapperService:
         return soup.find("h1", class_="product-top__product-info__name").text
 
     def getOpinionsCount(self, soup):
-        return soup.find("div", class_="score-extend__review").text.replace(" opinii", "")
+        return soup.find("div", class_="score-extend__review").text.replace(" opinii", "").replace(" opinia", "").replace(" opinie", "")
 
     def getAverageMark(self, soup):
         return float(soup.find("div", class_="review-header__score").find("font").text.replace(',', '.'))
@@ -38,10 +39,14 @@ class CeneoScrapperService:
         userPosts = opinionsDiv.find_all('div', class_="user-post__card")
         opinions = []
         for userPost in userPosts:
-            opinionData = self.getOpinionData(userPost)
+            opinionData = self.getOpinionData(userPost, product)
 
             opinion = Opinion(*opinionData)
             opinion.setProductId(product)
+            opinion.setFeatures(self.getFeaturesData(userPost))
+            for feature in opinion.features:
+                feature.setProduct(product)
+
             opinions.append(opinion)
 
         opinions = self.processNextPage(opinions, soup, product)
@@ -49,6 +54,9 @@ class CeneoScrapperService:
 
     def processNextPage(self, opinions, soup, product):
         pagination = soup.find("div", class_="pagination")
+        if pagination is None:
+            return opinions
+
         nextButton = pagination.find('a', class_="pagination__item pagination__next")
         if nextButton is None:
             return opinions
@@ -58,7 +66,7 @@ class CeneoScrapperService:
 
         return opinions + self.getOpinions(soup, product)
 
-    def getOpinionData(self, userPost):
+    def getOpinionData(self, userPost, product):
         opinionId = userPost.get('data-entry-id')
         author = userPost.find('span', class_="user-post__author-name").text
         recommendationsSpan = userPost.find('span', class_="user-post__author-recomendation")
@@ -78,5 +86,22 @@ class CeneoScrapperService:
         dislikes = userPost.find('button', class_="vote-no").get('data-total-vote')
         content = userPost.find('div', class_="user-post__text").text
 
-        return [opinionId, author, recommendations, stars, is_opinion_confirmed_by_purchase, date_of_opinion, date_of_purchase,
+        return [opinionId, author, recommendations, stars, is_opinion_confirmed_by_purchase, date_of_opinion,
+                date_of_purchase,
                 likes, dislikes, content]
+
+    def getFeaturesData(self, userPost):
+        features = []
+
+        featuresColumns = userPost.find_all('div', class_="review-feature__col")
+        for column in featuresColumns:
+            if column.find('div', class_="review-feature__title--positives") is not None:
+                for featureDiv in column.find_all('div', class_="review-feature__item"):
+                    feature = Feature(featureDiv.text, True)
+                    features.append(feature)
+            elif column.find('div', class_="review-feature__title--negatives") is not None:
+                for featureDiv in column.find_all('div', class_="review-feature__item"):
+                    feature = Feature(featureDiv.text, False)
+                    features.append(feature)
+
+        return features

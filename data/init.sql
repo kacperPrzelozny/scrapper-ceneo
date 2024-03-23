@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS opinions (
 CREATE TABLE IF NOT EXISTS features (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     opinion_id INTEGER,
+    product_id INTEGER,
     name VARCHAR(255),
     is_positive BOOLEAN,
-    FOREIGN KEY(opinion_id) REFERENCES opinions(id)
+    FOREIGN KEY(opinion_id) REFERENCES opinions(id),
+    FOREIGN KEY(product_id) REFERENCES products(id)
 );

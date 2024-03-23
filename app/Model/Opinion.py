@@ -1,11 +1,11 @@
 from app.Model.Model import Model
-from app.Model.Product import Product
 
 
 class Opinion(Model):
 
     def __init__(self, id, author, recommendation, stars, is_opinion_confirmed_by_purchase, date_of_opinion,
                  date_of_purchase, likes, dislikes, content):
+        self.features = None
         self.product = None
         self.product_id = None
         self.id = id
@@ -22,11 +22,18 @@ class Opinion(Model):
     def setProductId(self, product):
         self.product_id = product.id
         self.product = product
+        
+    def setFeatures(self, features):
+        for feature in features:
+            feature.setOpinion(self)
+        self.features = features
 
     def save(self):
         sql = "INSERT INTO opinions (id, product_id, author, recommendation, stars, is_opinion_confirmed_by_purchase, date_of_opinion, date_of_purchase, likes, dislikes, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         Opinion.executeQuery(sql, self.flattenObject())
 
+        for feature in self.features:
+            feature.save()
     def flattenObject(self):
         return [
             self.id,
