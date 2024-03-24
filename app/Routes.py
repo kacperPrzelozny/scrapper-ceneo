@@ -29,6 +29,7 @@ class Routes:
         # Products controller routes
         Routes.registerRoute(app, '/products', ProductsController.indexProducts)
         Routes.registerRoute(app, '/products/<string:id>', ProductsController.viewProduct)
+        Routes.registerRoute(app, '/products/<string:id>/<string:type>', ProductsController.exportOpinions)
 
     @staticmethod
     def registerRoute(app, path, function, methods=None):
