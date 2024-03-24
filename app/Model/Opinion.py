@@ -3,6 +3,10 @@ from app.Model.Model import Model
 
 class Opinion(Model):
 
+    fields = [
+        "id", "product_id", "author", "recommendation", "stars", "is_opinion_confirmed_by_purchase", "date_of_opinion",
+        "date_of_purchase", "likes", "dislikes", "content"
+    ]
     def __init__(self, id, author, recommendation, stars, is_opinion_confirmed_by_purchase, date_of_opinion,
                  date_of_purchase, likes, dislikes, content):
         self.features = None
@@ -22,7 +26,7 @@ class Opinion(Model):
     def setProductId(self, product):
         self.product_id = product.id
         self.product = product
-        
+
     def setFeatures(self, features):
         for feature in features:
             feature.setOpinion(self)
@@ -34,6 +38,7 @@ class Opinion(Model):
 
         for feature in self.features:
             feature.save()
+
     def flattenObject(self):
         return [
             self.id,
@@ -48,3 +53,13 @@ class Opinion(Model):
             self.dislikes,
             self.content
         ]
+
+    @staticmethod
+    def getOpinionsByProductId(productId, toObject=False):
+        sql = "SELECT * FROM opinions WHERE product_id = ?"
+        result = Opinion.executeQuery(sql, productId)
+        if toObject:
+            # create opinion object
+            pass
+
+        return result

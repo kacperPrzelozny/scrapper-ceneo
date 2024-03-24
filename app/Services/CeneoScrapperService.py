@@ -68,7 +68,7 @@ class CeneoScrapperService:
 
     def getOpinionData(self, userPost, product):
         opinionId = userPost.get('data-entry-id')
-        author = userPost.find('span', class_="user-post__author-name").text
+        author = userPost.find('span', class_="user-post__author-name").text.strip()
         recommendationsSpan = userPost.find('span', class_="user-post__author-recomendation")
         recommendations = None if recommendationsSpan is None else recommendationsSpan.find('em').text
         stars = userPost.find('span', class_="user-post__score-count").text.split('/')[0]

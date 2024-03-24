@@ -1,7 +1,46 @@
 {% extends 'index.html' %}
 {% set active = "products" %}
 {% block content %}
-    <div class="container">
-        <h1>Products page</h1>
-    </div>
+    <main>
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <h2>Extracted products</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-2 d-flex justify-content-center">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Opinions</th>
+                        <th scope="col">Average stars</th>
+                        <th scope="col">Positives</th>
+                        <th scope="col">Negatives</th>
+                        <th scope="col">Export</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td><a href="/products/{{ product.id }}" style="color: #FF6400 !important;"
+                              class="text-decoration-none pointer-event">{{ product.name }}</a></td>
+                            <td>{{ product.opinions_count }}</td>
+                            <td>{{ product.average_mark }}</td>
+                            <td>{{ product.positive_features }}</td>
+                            <td>{{ product.negative_features }}</td>
+                            <td>
+                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/json">json</a>
+                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/csv">csv</a>
+                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/xls">xls</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 {% endblock %}
