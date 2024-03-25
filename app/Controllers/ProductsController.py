@@ -1,10 +1,9 @@
-import uuid
-
-from flask import render_template, send_file, redirect
+from flask import render_template, send_file, redirect, request
 
 from app.Model.Opinion import Opinion
 from app.Model.Product import Product
 from app.Services.ExportsHelper import ExportsHelper
+from app.Services.SelectQuery import SelectQuery
 
 
 class ProductsController:
@@ -16,11 +15,32 @@ class ProductsController:
 
     @staticmethod
     def viewProduct(id):
-        return "Product " + id
+        page = request.args.get('page', 1, type=int)
+        if page < 1:
+            page = 1
+
+        query = SelectQuery('opinions').where('product_id', '=', id).orderBy('id', 'ASC')
+        paginationInfo = Opinion.getMetaInfoForOpinion(query, 10, page)
+        if page > paginationInfo['pages']:
+            page = 1
+            paginationInfo = Opinion.getMetaInfoForOpinion(query, 10, page)
+
+        sql = query.select(Opinion.displayFields).forPage(10, page).construct()
+        opinions = Opinion.getOpinionsByProductIdForProductPage(sql)
+        product = Product.findById([id])
+        if not product:
+            return redirect('/opinions?error=1&product_id={}'.format(id))
+        return render_template(
+            'products/view.html',
+            fields=Opinion.displayFields,
+            opinions=opinions,
+            paginationInfo=paginationInfo,
+            product=product
+        )
 
     @staticmethod
     def exportOpinions(id, type):
-        opinions = Opinion.getOpinionsByProductId([id])
+        opinions = Opinion.getOpinionsByProductIdForExport([id])
         exportHelper = ExportsHelper(Opinion.fields, opinions)
         match type:
             case 'xls':
