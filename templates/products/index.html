@@ -12,10 +12,10 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col">Id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Opinions</th>
-                        <th scope="col">Average stars</th>
+                        <th scope="col">Average Stars</th>
                         <th scope="col">Positives</th>
                         <th scope="col">Negatives</th>
                         <th scope="col">Export</th>
@@ -25,16 +25,15 @@
                     {% for product in products %}
                         <tr>
                             <td>{{ product.id }}</td>
-                            <td><a href="/products/{{ product.id }}" style="color: #FF6400 !important;"
-                              class="text-decoration-none pointer-event">{{ product.name }}</a></td>
+                            <td><a href="/products/{{ product.id }}" class="text-decoration-none pointer-event orange">{{ product.name }}</a></td>
                             <td>{{ product.opinions_count }}</td>
                             <td>{{ product.average_mark }}</td>
                             <td>{{ product.positive_features }}</td>
                             <td>{{ product.negative_features }}</td>
                             <td>
-                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/json">json</a>
-                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/csv">csv</a>
-                                <a style="color: #FF6400 !important;" href="/products/{{ product.id }}/xls">xls</a>
+                                <a class="orange" href="/products/{{ product.id }}/json">json</a>
+                                <a class="orange" href="/products/{{ product.id }}/csv">csv</a>
+                                <a class="orange" href="/products/{{ product.id }}/xls">xls</a>
                             </td>
                         </tr>
                     {% endfor %}

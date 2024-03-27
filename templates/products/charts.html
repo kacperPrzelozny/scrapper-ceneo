@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="row col-md-12 justify-content-center">
+        <div class="row col-md-10 justify-content-around mt-5">
+            <div class="card col-md-4 justify-content-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pie chart</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">based on recommendations</h6>
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-4 justify-content-center">
+                <div class="card-body ">
+                    <h5 class="card-title">Bar chart</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">opinions grouped by rating</h6>
+                    <div class="row align-items-center h-75">
+                    <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 justify-content-center">
+        <div class="row col-md-10 justify-content-center mt-5 text-center">
+            <a href="/products/{{ id }}" class="orange">Go back to product page</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const pieChart = document.getElementById('pieChart');
+        new Chart(pieChart, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [{{ pieChart["-"] }}, {{ pieChart["Polecam"] }}, {{ pieChart["Nie polecam"] }}]
+                }],
+
+                labels: [
+                    'empty',
+                    'Polecam',
+                    'Nie polecam'
+                ]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: true,
+                width: 800,
+                height: 400
+            }
+        });
+
+        const barChart = document.getElementById('barChart');
+        new Chart(barChart, {
+            type: 'bar',
+            data: {
+                labels: ['0','0.5','1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5'],
+                datasets: [{
+                    label: 'Opinions with stars',
+                    data: [{{ barChart['0']}}, {{ barChart['0.5']}}, {{ barChart['1.0'] }}, {{ barChart['1.5'] }}, {{ barChart['2.0'] }}, {{ barChart['2.5'] }}, {{ barChart['3.0'] }}, {{ barChart['3.5'] }}, {{ barChart['4.0'] }}, {{  barChart['4.5'] }}, {{ barChart['5.0'] }}],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: true,
+                width: 800,
+                height: 600
+            }
+        });
+    </script>
+{% endblock %}

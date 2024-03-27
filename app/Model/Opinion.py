@@ -1,12 +1,19 @@
+import math
+
 from app.Model.Model import Model
 
 
 class Opinion(Model):
-
     fields = [
         "id", "product_id", "author", "recommendation", "stars", "is_opinion_confirmed_by_purchase", "date_of_opinion",
         "date_of_purchase", "likes", "dislikes", "content"
     ]
+
+    displayFields = [
+        "id", "author", "recommendation", "stars", "is_opinion_confirmed_by_purchase", "date_of_opinion",
+        "date_of_purchase", "likes", "dislikes", "content"
+    ]
+
     def __init__(self, id, author, recommendation, stars, is_opinion_confirmed_by_purchase, date_of_opinion,
                  date_of_purchase, likes, dislikes, content):
         self.features = None
@@ -55,11 +62,59 @@ class Opinion(Model):
         ]
 
     @staticmethod
-    def getOpinionsByProductId(productId, toObject=False):
+    def getOpinionsByProductIdForExport(productId, toObject=False):
         sql = "SELECT * FROM opinions WHERE product_id = ?"
         result = Opinion.executeQuery(sql, productId)
-        if toObject:
-            # create opinion object
-            pass
 
+        return result
+
+    @staticmethod
+    def getOpinionsByProductIdForProductPage(sql):
+        result = Opinion.executeQuery(sql)
+
+        opinions = []
+        for row in result:
+            opinions.append(Opinion(*row))
+
+        return opinions
+
+    @staticmethod
+    def getMetaInfoForOpinion(query, first, page):
+        sql = query.select(['COUNT(*)']).construct()
+        result = Opinion.executeQuery(sql)
+        count = result[0][0]
+        nextPage = True if count > first * page else False
+        previousPage = True if page > 1 else False
+        pages = math.ceil(count / first)
+        return {
+            'nextPage': nextPage,
+            'previousPage': previousPage,
+            'pages': pages,
+            'count': count,
+            'currentPage': page,
+            'perPage': first
+        }
+
+    @staticmethod
+    def getDataForPieChart(productId):
+        sql = """select
+            COUNT(case opinions.recommendation when null then 1 else 1 end) how_many,
+            opinions.recommendation
+            FROM opinions
+            where product_id=?
+            GROUP BY recommendation"""
+
+        result = Opinion.executeQuery(sql, [productId])
+        return result
+
+    @staticmethod
+    def getDataForBarChart(productId):
+        sql = """select
+            COUNT(*) how_many,
+            opinions.stars
+            FROM opinions
+            where product_id=?
+            GROUP BY stars"""
+
+        result = Opinion.executeQuery(sql, [productId])
         return result

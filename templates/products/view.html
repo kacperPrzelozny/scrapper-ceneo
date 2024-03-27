@@ -1,0 +1,90 @@
+{% extends 'index.html' %}
+{% set active = "products" %}
+{% block content %}
+    <main>
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <h2>Extracted opinions for product <span class="orange">{{ product.name }}</span>&nbsp;<a
+                        href="/products/{{ product.id }}/charts"><span class="badge text-bg-secondary">see charts</span></a></h2>
+            </div>
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <h4>Export opinions</h4>
+                <a href="/products/{{ product.id }}/json" class="btn btn-primary mx-1">json</a>
+                <a href="/products/{{ product.id }}/csv" class="btn btn-primary mx-1">csv</a>
+                <a href="/products/{{ product.id }}/xls" class="btn btn-primary mx-1">xls</a>
+            </div>
+        </div>
+        {% include 'elements/filters.html' %}
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% for field in fields %}
+                            <th scope="col"><a
+                                    class="page-link orange text-center"
+                                    href="/products/{{ product.id }}?{{ filters }}column={{ field }}&order={{ fieldOrders[field] }}">
+                                {{ field.replace('_', ' ').title() }}
+                            </a></th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for opinion in opinions %}
+                        <tr>
+                            <td class="text-center">{{ opinion.id }}</td>
+                            <td class="text-center">{{ opinion.author }}</td>
+                            <td class="text-center">{{ opinion.recommendation if opinion.recommendation else "-" }}</td>
+                            <td class="text-center">{{ opinion.stars }}</td>
+                            <td class="text-center">{{ "Yes" if opinion.is_opinion_confirmed_by_purchase else "No" }}</td>
+                            <td class="text-center">{{ opinion.date_of_opinion if opinion.date_of_opinion else "-" }}</td>
+                            <td class="text-center">{{ opinion.date_of_purchase if opinion.date_of_purchase else "-" }}</td>
+                            <td class="text-center">{{ opinion.likes }}</td>
+                            <td class="text-center">{{ opinion.dislikes }}</td>
+                            <td
+                                    class="text-center"
+                                    {% if ((";").join(opinion.content)).count(";") > 30 %}
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip"
+                                    data-bs-title="{{ opinion.content }}"
+                                    {% endif %}
+                            >
+                                {{ opinion.content[:30] + "..." if ((";").join(opinion.content)).count(";") > 30 else opinion.content }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item {{ "" if paginationInfo.previousPage else "disabled" }}">
+                            <a class="page-link orange"
+                               href="/products/{{ product.id }}?{{ filters }}page={{ paginationInfo.currentPage-1 }}&column={{ column }}&order={{ order }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% for i in range(1,paginationInfo.pages+1) %}
+                            <li class="page-item {{ "" if paginationInfo.currentPage != i else "disabled" }}"><a
+                                    class="page-link orange"
+                                    href="/products/{{ product.id }}?{{ filters }}page={{ i }}&column={{ column }}&order={{ order }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="page-item {{ "" if paginationInfo.nextPage else "disabled" }}">
+                            <a class="page-link orange"
+                               href="/products/{{ product.id }}?{{ filters }}page=
+                                       {{ paginationInfo.currentPage+1 }}&column={{ column }}&order={{ order }}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+{% endblock %}

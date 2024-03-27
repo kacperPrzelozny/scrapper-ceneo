@@ -1,0 +1,132 @@
+<div class="row mt-2 justify-content-center">
+    <div class="col-md-10 my-4 d-flex justify-content-center">
+        <div class="accordion accordion-flush col-md-10" id="filter">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false"
+                            aria-controls="flush-collapseOne">
+                        Filters
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                     data-bs-parent="#filter">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <form action="/products/{{ product.id }}" method="GET">
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="author"
+                                                   value="{{ r.args.get('author', "") }}"
+                                                   placeholder="author">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-select" name="recommendation"
+                                                    value="{{ r.args.get('recommendation', "") }}">
+                                                <option value="">recommendation</option>
+                                                <option value="-" {{ "selected" if r.args.get('recommendation', "") == "-" }}>empty</option>
+                                                <option value="Polecam" {{ "selected" if r.args.get('recommendation', "") == "Polecam" }}>
+                                                    Polecam
+                                                </option>
+                                                <option value="Niepolecam" {{ "selected" if r.args.get('recommendation', "") == "Niepolecam" }}>
+                                                    Niepolecam
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control"
+                                                   value="{{ r.args.get('stars', "") }}"
+                                                   name="stars"
+                                                   min="0"
+                                                   max="5"
+                                                   step="0.5"
+                                                   placeholder="stars">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-select" name="is_confirmed_by_purchase"
+                                                    value="{{ r.args.get('is_confirmed_by_purchase', "") }}">
+                                                <option value="">is confirmed by purchase</option>
+                                                <option value="1" {{ "selected" if r.args.get('is_confirmed_by_purchase', "") == "1" }}>
+                                                    Yes
+                                                </option>
+                                                <option value="0" {{ "selected" if r.args.get('is_confirmed_by_purchase', "") == "0" }}>
+                                                    No
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control datepicker" name="date_of_opinion"
+                                                   value="{{ r.args.get('date_of_opinion', "") }}"
+                                                   placeholder="date of opinion">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control datepicker" name="date_of_purchase"
+                                                   value="{{ r.args.get('date_of_purchase', "") }}"
+                                                   placeholder="date of purchase">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control"
+                                                   value="{{ r.args.get('likes', "") }}"
+                                                   name="likes"
+                                                   min="0"
+                                                   step="1"
+                                                   placeholder="likes">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control"
+                                                   value="{{ r.args.get('dislikes', "") }}"
+                                                   name="dislikes"
+                                                   min="0"
+                                                   step="1"
+                                                   placeholder="dislikes">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="content"
+                                                   value="{{ r.args.get('content', "") }}"
+                                                   placeholder="content">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary col-md-12">Filter</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <a href="/products/{{ product.id }}?column={{ column }}&order={{ order }}"
+                                               class="btn btn-light col-md-12">Reset</a>
+                                        </div>
+                                    </div>
+                                    {# hidden inputs for ordering #}
+                                    <input type="hidden" name="column" value="{{ column }}">
+                                    <input type="hidden" name="order" value="{{ order }}">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
