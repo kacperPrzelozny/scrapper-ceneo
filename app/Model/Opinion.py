@@ -4,7 +4,6 @@ from app.Model.Model import Model
 
 
 class Opinion(Model):
-
     fields = [
         "id", "product_id", "author", "recommendation", "stars", "is_opinion_confirmed_by_purchase", "date_of_opinion",
         "date_of_purchase", "likes", "dislikes", "content"
@@ -86,7 +85,7 @@ class Opinion(Model):
         count = result[0][0]
         nextPage = True if count > first * page else False
         previousPage = True if page > 1 else False
-        pages = math.ceil(count/first)
+        pages = math.ceil(count / first)
         return {
             'nextPage': nextPage,
             'previousPage': previousPage,
@@ -96,3 +95,26 @@ class Opinion(Model):
             'perPage': first
         }
 
+    @staticmethod
+    def getDataForPieChart(productId):
+        sql = """select
+            COUNT(case opinions.recommendation when null then 1 else 1 end) how_many,
+            opinions.recommendation
+            FROM opinions
+            where product_id=?
+            GROUP BY recommendation"""
+
+        result = Opinion.executeQuery(sql, [productId])
+        return result
+
+    @staticmethod
+    def getDataForBarChart(productId):
+        sql = """select
+            COUNT(*) how_many,
+            opinions.stars
+            FROM opinions
+            where product_id=?
+            GROUP BY stars"""
+
+        result = Opinion.executeQuery(sql, [productId])
+        return result

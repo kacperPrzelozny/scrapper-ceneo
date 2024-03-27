@@ -27,6 +27,7 @@
                                             <select class="form-select" name="recommendation"
                                                     value="{{ r.args.get('recommendation', "") }}">
                                                 <option value="">recommendation</option>
+                                                <option value="-" {{ "selected" if r.args.get('recommendation', "") == "-" }}>empty</option>
                                                 <option value="Polecam" {{ "selected" if r.args.get('recommendation', "") == "Polecam" }}>
                                                     Polecam
                                                 </option>

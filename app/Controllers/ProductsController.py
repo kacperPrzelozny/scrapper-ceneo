@@ -25,7 +25,7 @@ class ProductsController:
             fieldOrders[field] = "DESC" if column == field and order == "ASC" else "ASC"
             filters += "&" + field + "=" + request.args.get(field, '', type=str)
         filters = filters + "&"
-        print(filters)
+
         if page < 1:
             page = 1
 
@@ -58,6 +58,24 @@ class ProductsController:
         )
 
     @staticmethod
+    def charts(id):
+        p = Opinion.getDataForPieChart(id)
+        pieChart = {}
+        for row in p:
+            r = row[1]
+            if r is None:
+                r = '-'
+            pieChart[r] = row[0]
+        b = Opinion.getDataForBarChart(id)
+        barChart = {
+            "0": 0, "0.5": 0, "1.0": 0, "1.5": 0, "2.0": 0, "2.5": 0, "3.0": 0, "3.5": 0, "4.0": 0, "4.5": 0, "5.0": 0,
+        }
+        for row in b:
+            barChart[str(row[1])] = row[0]
+        print(barChart)
+        return render_template('products/charts.html', pieChart=pieChart, barChart=barChart, id=id)
+
+    @staticmethod
     def exportOpinions(id, type):
         opinions = Opinion.getOpinionsByProductIdForExport([id])
         exportHelper = ExportsHelper(Opinion.fields, opinions)
@@ -84,8 +102,10 @@ class ProductsController:
             query.where("author", "LIKE", "'%" + author + "%'")
 
         recommendation = request.args.get('recommendation', "", type=str)
-        if recommendation != "":
+        if recommendation != "" and recommendation != "-":
             query.where("recommendation", "LIKE", "'%" + request.args.get('recommendation', "", type=str) + "%'")
+        if recommendation == "-":
+            query.where("recommendation", "IS", "NULL")
 
         is_opinion_confirmed_by_purchase = request.args.get('is_opinion_confirmed_by_purchase', "", type=str)
         if is_opinion_confirmed_by_purchase != '':

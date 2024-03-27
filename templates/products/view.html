@@ -4,7 +4,14 @@
     <main>
         <div class="row justify-content-center">
             <div class="col-md-10 my-4 d-flex justify-content-center">
-                <h2>Extracted opinions for product <span class="orange">{{ product.name }}</span></h2>
+                <h2>Extracted opinions for product <span class="orange">{{ product.name }}</span>&nbsp;<a
+                        href="/products/{{ product.id }}/charts"><span class="badge text-bg-secondary">see charts</span></a></h2>
+            </div>
+            <div class="col-md-10 my-4 d-flex justify-content-center">
+                <h4>Export opinions</h4>
+                <a href="/products/{{ product.id }}/json" class="btn btn-primary mx-1">json</a>
+                <a href="/products/{{ product.id }}/csv" class="btn btn-primary mx-1">csv</a>
+                <a href="/products/{{ product.id }}/xls" class="btn btn-primary mx-1">xls</a>
             </div>
         </div>
         {% include 'elements/filters.html' %}
@@ -27,7 +34,7 @@
                         <tr>
                             <td class="text-center">{{ opinion.id }}</td>
                             <td class="text-center">{{ opinion.author }}</td>
-                            <td class="text-center">{{ opinion.recommendation }}</td>
+                            <td class="text-center">{{ opinion.recommendation if opinion.recommendation else "-" }}</td>
                             <td class="text-center">{{ opinion.stars }}</td>
                             <td class="text-center">{{ "Yes" if opinion.is_opinion_confirmed_by_purchase else "No" }}</td>
                             <td class="text-center">{{ opinion.date_of_opinion if opinion.date_of_opinion else "-" }}</td>
