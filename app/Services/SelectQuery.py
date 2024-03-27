@@ -28,7 +28,7 @@ class SelectQuery:
             SELECT {', '.join(self.columns if len(self.columns) > 0 else ["*"])}
             FROM {self.table} """
         if len(self.whereClause) > 0:
-            sql += f"""WHERE {"AND".join(self.whereClause)} """
+            sql += f"""WHERE {" AND ".join(self.whereClause)} """
         if len(self.order) > 0:
             sql += f"""ORDER BY {self.order} """
         if self.pagination:

@@ -71,7 +71,7 @@ class CeneoScrapperService:
         author = userPost.find('span', class_="user-post__author-name").text.strip()
         recommendationsSpan = userPost.find('span', class_="user-post__author-recomendation")
         recommendations = None if recommendationsSpan is None else recommendationsSpan.find('em').text
-        stars = userPost.find('span', class_="user-post__score-count").text.split('/')[0]
+        stars = float(userPost.find('span', class_="user-post__score-count").text.split('/')[0].replace(',', '.'))
         is_opinion_confirmed_by_purchase = True if userPost.find('div', class_="review-pz") is not None else False
         dates = userPost.find_all('time')
         try:
